@@ -12,7 +12,10 @@ KUBELET_HOSTNAME="--hostname-override={{ ansible_hostname }}"
 {% set kubelet_args_base %}--pod-manifest-path={{ kube_manifest_dir }} \
 --pod-infra-container-image={{ pod_infra_image_repo }}:{{ pod_infra_image_tag }} \
 --kube-reserved cpu={{ kubelet_cpu_limit }},memory={{ kubelet_memory_limit|regex_replace('Mi', 'M') }} \
---node-status-update-frequency={{ kubelet_status_update_frequency }}{% endset %}
+--node-status-update-frequency={{ kubelet_status_update_frequency }} \
+{% if kube_version | version_compare('v1.6', '>=') %}
+--enable-cri={{ kubelet_enable_cri }} --cgroups-per-qos={{ kubelet_cgroups_per_qos }} \
+--enforce-node-allocatable='{{ kubelet_enforce_node_allocatable }}' {% endif %}{% endset %}
 
 {# DNS settings for kubelet #}
 {% if dns_mode == 'kubedns' %}
@@ -41,7 +44,7 @@ KUBELET_HOSTNAME="--hostname-override={{ ansible_hostname }}"
 {%   set node_labels %}--node-labels=node-role.kubernetes.io/node=true{% endset %}
 {% endif %}
 
-KUBELET_ARGS="{{ kubelet_args_base }} {{ kubelet_args_dns }} {{ kubelet_args_kubeconfig }} {{ node_labels }}"
+KUBELET_ARGS="{{ kubelet_args_base }} {{ kubelet_args_dns }} {{ kubelet_args_kubeconfig }} {{ node_labels }} {% if kubelet_custom_flags is string %} {{kubelet_custom_flags}} {% else %}{% for flag in kubelet_custom_flags %} {{flag}} {% endfor %}{% endif %}"
 {% if kube_network_plugin is defined and kube_network_plugin in ["calico", "weave", "canal"] %}
 KUBELET_NETWORK_PLUGIN="--network-plugin=cni --network-plugin-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin"
 {% elif kube_network_plugin is defined and kube_network_plugin == "weave" %}
