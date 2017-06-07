@@ -25,6 +25,8 @@
     group: "{{ issue_cert_file_group | d('root' )}}"
     mode: "{{ issue_cert_dir_mode | d('0755') }}"
     owner: "{{ issue_cert_file_owner | d('root') }}"
+  when:
+    - inventory_hostname == issue_cert_hosts|first
 
 - name: issue_cert | Generate the cert
   uri:
