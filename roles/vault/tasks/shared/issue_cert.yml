@@ -41,7 +41,7 @@
       ip_sans: "{{ issue_cert_ip_sans | default([]) | join(',') }}"
   register: issue_cert_result
   when:
-    - inventory_hostname in issue_cert_hosts
+    - inventory_hostname == issue_cert_hosts|first
 
 - name: issue_cert | Copy the cert to all hosts
   copy:
