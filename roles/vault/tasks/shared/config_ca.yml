@@ -11,6 +11,9 @@
     return_content: true
     status_code: 200,204
     validate_certs: no
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_pull_current_ca
 
 - name: config_ca | Read root CA key for Vault
@@ -27,4 +30,7 @@
     body:
       pem_bundle: "{{ vault_ca_cert_cat.stdout + '\n' + vault_ca_key_cat.stdout }}"
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: vault_ca_cert_cat.stdout.strip() != vault_pull_current_ca.get("content","").strip()

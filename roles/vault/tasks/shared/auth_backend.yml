@@ -5,6 +5,9 @@
     url: "{{ vault_leader_url }}/v1/sys/auth/{{ auth_backend_path }}/tune"
     headers: "{{ vault_headers }}"
     validate_certs: false
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   ignore_errors: true 
   register: vault_auth_backend_check
 
@@ -18,4 +21,7 @@
       description: "{{ auth_backend_description|d('') }}"
       type: "{{ auth_backend_type }}"
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: vault_auth_backend_check|failed

@@ -10,6 +10,9 @@
       secret_shares: "{{ vault_secret_shares }}"
       secret_threshold: "{{ vault_secret_threshold }}"
     validate_certs: false
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_init_result
   when: not vault_cluster_is_initialized and inventory_hostname == groups.vault|first
 

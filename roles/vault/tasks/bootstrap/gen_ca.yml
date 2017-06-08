@@ -13,6 +13,9 @@
     method: POST
     body_format: json
     body: "{{ vault_ca_options }}"
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_ca_gen
   when: inventory_hostname == groups.vault|first and vault_ca_cert_needed
 

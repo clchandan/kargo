@@ -27,6 +27,9 @@
     body:
       secret_shares: 1
       secret_threshold: 1
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_temp_init
 
 # NOTE: vault_headers and vault_url are used by subsequent issue calls
@@ -45,4 +48,7 @@
     body_format: json
     body:
       key: "{{ item }}"
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   with_items: "{{ vault_temp_unseal_keys|default([]) }}"

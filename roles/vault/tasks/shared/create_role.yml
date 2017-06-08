@@ -20,6 +20,9 @@
              {{ create_role_policy_rules | to_json + '\n' }}
              {%- endif -%}
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: inventory_hostname == groups[create_role_group]|first
 
 - name: create_role | Create the new role in the pki mount
@@ -35,6 +38,9 @@
           {{ create_role_options }}
           {%- endif -%}
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: inventory_hostname == groups[create_role_group]|first
 
 ## Cert based auth method
@@ -60,6 +66,9 @@
       certificate: "{{ hostvars[groups[create_role_group]|first]['gen_cert_result']['json']['data']['issuing_ca'] }}"
       policies: "{{ create_role_name }}"
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: vault_role_auth_method == "cert" and inventory_hostname == groups[create_role_group]|first
 
 ## Userpass based auth method

@@ -2,6 +2,9 @@
 - name: Kubernetes Apps | Wait for kube-apiserver
   uri:
     url: http://localhost:8080/healthz
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: result
   until: result.status == 200
   retries: 10

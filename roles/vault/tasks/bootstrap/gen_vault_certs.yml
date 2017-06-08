@@ -8,6 +8,9 @@
     body_format: json
     body: "{{ vault_default_role_permissions }}"
     status_code: 204
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   when: inventory_hostname == groups.vault|first and vault_api_cert_needed
 
 - include: ../shared/issue_cert.yml

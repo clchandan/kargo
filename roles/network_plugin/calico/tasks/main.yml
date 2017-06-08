@@ -77,6 +77,9 @@
   delay: 5
   delegate_to: "{{groups['etcd'][0]}}"
   run_once: true
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
 
 - name: Calico | Check if calico network pool has already been configured
   command: |-

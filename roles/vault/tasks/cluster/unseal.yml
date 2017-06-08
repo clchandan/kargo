@@ -8,6 +8,9 @@
     body_format: json
     body:
       key: "{{ item }}"
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   with_items: "{{ vault_unseal_keys|default([]) }}"
   when: vault_is_sealed
 
@@ -17,6 +20,9 @@
     headers: "{{ vault_headers }}"
     method: HEAD
     status_code: 200, 429
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_node_ready
   until: vault_node_ready|succeeded
   retries: 5

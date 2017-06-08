@@ -9,7 +9,9 @@
   register: vault_leader_check
   until: "vault_leader_check|succeeded"
   retries: 10
-
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
 - name: find_leader | Set fact for current http leader
   set_fact:
     vault_leader_url: "{{ vault_config.listener.tcp.tls_disable|d()|ternary('http', 'https') }}://{{ item }}:{{ vault_port }}"

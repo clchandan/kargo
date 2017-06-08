@@ -40,6 +40,9 @@
     url: "{{ vault_config.listener.tcp.tls_disable|d()|ternary('http', 'https') }}://localhost:{{ vault_port }}/v1/sys/health"
     headers: "{{ vault_client_headers }}"
     status_code: 200,429,500,501
+  environment:
+    http_proxy: "{{ uri_proxy_http | default('') }}"
+    https_proxy: "{{ uri_proxy_https | default('') }}"
   register: vault_health_check
   until: vault_health_check|succeeded
   retries: 10
