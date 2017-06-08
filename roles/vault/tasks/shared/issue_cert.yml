@@ -51,7 +51,7 @@
     mode: "{{ issue_cert_file_mode | d('0644') }}"
     owner: "{{ issue_cert_file_owner | d('root') }}"
   when:
-    - inventory_hostname in issue_cert_hosts
+    - inventory_hostname == issue_cert_hosts|first
 
 - name: issue_cert | Copy the key to all hosts
   copy:
@@ -71,5 +71,5 @@
     mode: "{{ issue_cert_file_mode | d('0644') }}"
     owner: "{{ issue_cert_file_owner | d('root') }}"
   when:
-    - inventory_hostname in issue_cert_hosts
+    - inventory_hostname == issue_cert_hosts|first
     - issue_cert_copy_ca|default(false)
