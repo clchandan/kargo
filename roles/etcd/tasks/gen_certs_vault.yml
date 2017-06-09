@@ -28,6 +28,9 @@
     body_format: json
     body:
       password: "{{ etcd_vault_creds.password }}"
+  environment:
+    http_proxy: ""
+    https_proxy: ""
   register: etcd_vault_login_result
   when: inventory_hostname == groups.etcd|first
 
