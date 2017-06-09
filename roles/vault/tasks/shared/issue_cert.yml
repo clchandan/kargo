@@ -45,8 +45,11 @@
       common_name: "{{ issue_cert_common_name | d(issue_cert_path.rsplit('/', 1)[1].rsplit('.', 1)[0]) }}"
       format: "{{ issue_cert_format | d('pem') }}"
       ip_sans: "{{ issue_cert_ip_sans | default([]) | join(',') }}"
+  environment:
+    http_proxy: ""
+    https_proxy: ""
   register: issue_cert_result
-  when: inventory_hostname == issue_cert_hosts|first
+  when: inventory_hostname in issue_cert_hosts
 
 - name: issue_cert | Copy the cert to all hosts
   copy:
