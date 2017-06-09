@@ -84,7 +84,5 @@
     issue_cert_role: etcd
     issue_cert_url: "{{ hostvars[groups.vault|first]['vault_leader_url'] }}"
   with_items: "{{ etcd_node_certs_needed|d([]) }}"
-  when: inventory_hostname in etcd_node_cert_hosts
+  when: inventory_hostname in etcd_node_cert_hosts and inventory_hostname not in groups.etcd
   notify: set etcd_secret_changed
-
-
