@@ -45,7 +45,6 @@
         Accept: application/json
         Content-Type: application/json
         X-Vault-Token: "{{ vault_client_token }}"
-  when: vault_client_token != ""
 
 # Issue master certs to Etcd nodes
 - include: ../../vault/tasks/shared/issue_cert.yml
