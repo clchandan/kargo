@@ -32,7 +32,6 @@
     http_proxy: ""
     https_proxy: ""
   register: etcd_vault_login_result
-  when: inventory_hostname == groups.etcd|first
 
 - name: gen_certs_vault | Set fact for vault_client_token
   set_fact:
