@@ -58,6 +58,7 @@
     group: "{{ issue_cert_file_group | d('root' )}}"
     mode: "{{ issue_cert_file_mode | d('0644') }}"
     owner: "{{ issue_cert_file_owner | d('root') }}"
+  where: hostvars[issue_cert_hosts|first].get("issue_cert_result", {}).get("json", {}).get("data", {}).get("certificate")
 
 - name: issue_cert | Copy the key to all hosts
   copy:
