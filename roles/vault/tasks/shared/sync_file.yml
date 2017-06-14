@@ -46,6 +46,7 @@
     loop_var: host_item
   when:
     - sync_file_is_cert|d()
+    - hostvars[host_item].get("sync_file_key_stat", {}).get("stat", {}).get("exists")
 
 - name: "sync_file | Remove sync sources with files that do not match sync_file_srcs|first"
   set_fact:
