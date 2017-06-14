@@ -63,6 +63,12 @@
     - inventory_hostname != sync_file_key_srcs|first
     - sync_file_key_stat.stat.get("checksum") != hostvars[sync_file_srcs|first].get("sync_file_key_stat", {}).get("stat", {}).get("checksum")
 
+- debug:
+    var: sync_file_srcs
+
+- debug:
+    var: sync_file_srcs|d([]) | intersect(sync_file_key_srcs)
+
 - name: "sync_file | Consolidate file and key sources"
   set_fact:
     sync_file_srcs: "{{ sync_file_srcs|d([]) | intersect(sync_file_key_srcs) }}"
