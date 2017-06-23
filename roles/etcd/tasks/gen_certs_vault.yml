@@ -84,6 +84,6 @@
     issue_cert_path: "{{ item['item'] }}"
     issue_cert_role: etcd
     issue_cert_url: "{{ hostvars[groups.vault|first]['vault_leader_url'] }}"
-   with_items: "{{ generate_node_certs['results'] }}"
-   when: item['rc'] == 1
+  with_items: "{{ generate_node_certs['results'] }}"
+  when: item['rc'] == 1
   notify: set etcd_secret_changed
