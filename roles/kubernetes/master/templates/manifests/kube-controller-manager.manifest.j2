@@ -65,6 +65,9 @@ spec:
     - mountPath: {{ kube_cert_dir }}
       name: ssl-certs-kubernetes
       readOnly: true
+    - mountPath: {{ kube_config_dir }}
+      name: kubernetes-config
+      readOnly: true
 {% if cloud_provider is defined and cloud_provider in ["openstack", "azure", "vsphere" ] %}
     - mountPath: {{ kube_config_dir }}/cloud_config
       name: cloudconfig
@@ -74,6 +77,9 @@ spec:
   - hostPath:
       path: {{ kube_cert_dir }}
     name: ssl-certs-kubernetes
+  - hostPath:
+      path: {{ kube_config_dir }}
+    name: kubernetes-config    
 {% if cloud_provider is defined and cloud_provider in ["openstack", "azure", "vsphere"] %}
   - hostPath:
       path: {{ kube_config_dir }}/cloud_config

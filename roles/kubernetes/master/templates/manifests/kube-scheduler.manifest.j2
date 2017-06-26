@@ -42,3 +42,11 @@ spec:
         port: 10251
       initialDelaySeconds: 30
       timeoutSeconds: 10
+    volumeMounts:
+    - mountPath: {{ kube_config_dir }}
+      name: kubernetes-config
+      readOnly: true
+  volumes:
+  - hostPath:
+      path: {{ kube_config_dir }}
+    name: kubernetes-config
