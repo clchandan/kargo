@@ -89,11 +89,11 @@ if [ -n "$MASTERS" ]; then
         openssl x509 -req -in admin-${host}.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin-${host}.pem -days 3650 > /dev/null 2>&1
         # controller-manager key
         openssl genrsa -out controller-manager-${host}-key.pem 2048 > /dev/null 2>&1
-        openssl req -new -key controller-manager-${host}-key.pem -out controller-manager-${host}.csr -subj "/CN=system:kube-controller-manager" > /dev/null 2>&1
+        openssl req -new -key controller-manager-${host}-key.pem -out controller-manager-${host}.csr -subj "/CN=system:kube-controller-manager/O=${cn}" > /dev/null 2>&1
         openssl x509 -req -in controller-manager-${host}.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out controller-manager-${host}.pem -days 3650 > /dev/null 2>&1
         # scheduler
         openssl genrsa -out scheduler-${host}-key.pem 2048 > /dev/null 2>&1
-        openssl req -new -key scheduler-${host}-key.pem -out scheduler-${host}.csr -subj "/CN=system:kube-scheduler" > /dev/null 2>&1
+        openssl req -new -key scheduler-${host}-key.pem -out scheduler-${host}.csr -subj "/CN=system:kube-scheduler/O=${cn}" > /dev/null 2>&1
         openssl x509 -req -in scheduler-${host}.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out scheduler-${host}.pem -days 3650 > /dev/null 2>&1
     done
 fi

@@ -47,6 +47,9 @@ spec:
     - --configure-cloud-routes=true
     - --cluster-cidr={{ kube_pods_subnet }}
 {% endif %}
+{%  if authorization_mode == "RBAC" %}
+    - --use-service-account-credentials
+{%  endif %}
 {% if controller_mgr_custom_flags is string %}
     - {{ controller_mgr_custom_flags }}
 {% else %}
