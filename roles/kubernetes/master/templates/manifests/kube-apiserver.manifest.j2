@@ -97,7 +97,12 @@ spec:
       httpGet:
         host: 127.0.0.1
         path: /healthz
+{% if kube_api_insecure %}
         port: 8080
+{% else %}
+        scheme: https
+        port: 443
+{% endif %}
       initialDelaySeconds: 30
       timeoutSeconds: 10
     volumeMounts:
