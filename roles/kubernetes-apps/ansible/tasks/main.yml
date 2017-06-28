@@ -1,7 +1,12 @@
 ---
 - name: Kubernetes Apps | Wait for kube-apiserver
   uri:
-    url: http://localhost:8080/healthz
+    url: |-
+      {%- if kube_api_insecure -%}
+      http://localhost:{{ kube_apiserver_insecure_port }}/healthz
+      {%- else -%}
+      https://localhost:{{ kube_apiserver_port }}/healthz
+      {%- endif -%}
   register: result
   until: result.status == 200
   retries: 10
